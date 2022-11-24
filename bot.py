@@ -1,8 +1,10 @@
 import logging
 import os
 import re
+from _ast import Call
 
-from aiogram import Bot, Dispatcher,  types
+import aiohttp
+from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.files import JSONStorage
 from aiogram.dispatcher.filters.state import StatesGroup, State
@@ -64,6 +66,12 @@ async def send_welcome(message: types.Message, state: FSMContext):
         markup = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True) \
             .add("Войти", "Удалить аккаунт")
         await message.reply(msgs.get_message("registered"), reply_markup=markup)
+
+
+@dp.message_handler()
+async def echo_handler(message: types.Message):
+    await message.answer("ECHO")
+    await message.answer(message.text)
 
 
 @dp.message_handler(state=States.registered_state)
@@ -249,5 +257,13 @@ async def book_employee_waiting_time_state_handler(message: types.Message, state
         await message.answer(msgs.get_message("book_data_ok"), reply_markup=kbs.get_keyboard("main_keyboard"))
         await state.finish()
         await States.main_state.set()
+
+        async with aiohttp.ClientSession() as session:
+            async with session.post('http://127.0.0.1:8080/send',
+                                    json={"id": 10, "ok": True, "secret": "Some_secret"}) as resp:
+                print(resp.status)
+                print(await resp.text())
+
     else:
         await message.answer(msgs.get_message("not_understand"))
+
