@@ -1,6 +1,6 @@
 #!/bin/bash
 
 while true; do
-  python3.10 main.py;
+  python main.py;
   sleep 1;
 done

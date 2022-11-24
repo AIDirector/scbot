@@ -1,4 +1,4 @@
- from .Employees import EmployeesTable
+from .Employees import EmployeesTable
 from .EmployeeTypes import EmployeeTypesTable
 
 
