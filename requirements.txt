@@ -1,0 +1,6 @@
+aiogram~=2.23.1
+peewee~=3.15.4
+numpy~=1.23.4
+nltk~=3.7
+pymorphy2~=0.9.1
+scikit-learn~=1.1.2
